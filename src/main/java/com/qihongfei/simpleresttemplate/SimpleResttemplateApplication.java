@@ -2,6 +2,8 @@ package com.qihongfei.simpleresttemplate;
 
 import com.qihongfei.simpleresttemplate.model.Coffee;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -47,7 +49,9 @@ public class SimpleResttemplateApplication implements ApplicationRunner {
         //URI uri=URI.create("https://www.baidu.com");
         URI uri = UriComponentsBuilder.fromUriString("http://www.baidu.com").build().toUri();
         ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
-        log.info(forEntity.getBody());
+        //log.info(forEntity.getBody());
+
+
 
         URI nameUri = UriComponentsBuilder.fromUriString("http://localhost:8080/coffee/?name={name}")
                 .build("qihongfei");
@@ -56,6 +60,19 @@ public class SimpleResttemplateApplication implements ApplicationRunner {
                 .build();
         ResponseEntity<Coffee> exchange = restTemplate.exchange(requestEntity, Coffee.class);
         log.info("exchange response : {}", exchange);
+
+
+
+        //创建一个coffee 涉及money对象的序列化
+        String createUri="http://localhost:8080/coffee/";
+        Coffee latten = Coffee.builder()
+                .name("latten")
+                .price(Money.of(CurrencyUnit.of("CNY"),34.00))
+                .build();
+
+        Coffee coffee = restTemplate.postForObject(createUri, latten, Coffee.class);
+        log.info("create coffee : {}" ,coffee);
+
 
 
     }
