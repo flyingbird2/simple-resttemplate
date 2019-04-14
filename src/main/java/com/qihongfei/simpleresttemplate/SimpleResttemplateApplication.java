@@ -2,14 +2,17 @@ package com.qihongfei.simpleresttemplate;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.*;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.Banner;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
@@ -38,8 +41,11 @@ public class SimpleResttemplateApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		URI uri=URI.create("https://www.baidu.com");
-		ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+		//URI uri=URI.create("https://www.baidu.com");
+        URI uri = UriComponentsBuilder.fromUriString("https://www.baidu.com").build().toUri();
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
 		log.info(forEntity.getBody());
+
+
 	}
 }
